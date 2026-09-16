@@ -1,0 +1,23 @@
+{
+  "name": "mech-toolkit",
+  "version": "1.0.0",
+  "description": "Mechanical Engineer Toolkit - 45 Calculators, 70 Engineering Formulas, 16 Unit Converters with 21st.dev UI aesthetics",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node tests/converter.test.js && node tests/solver.test.js && node tests/data.test.js"
+  },
+  "keywords": [
+    "mechanical-engineering",
+    "engineering-calculators",
+    "formula-library",
+    "unit-converter",
+    "machine-design",
+    "thermodynamics",
+    "fluid-mechanics",
+    "solid-mechanics"
+  ],
+  "author": "",
+  "license": "MIT"
+}
