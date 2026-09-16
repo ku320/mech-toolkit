@@ -30,6 +30,7 @@
           <span class="brand-title">MechToolkit</span>
           <span class="brand-badge">Engineering V1.0</span>
         </div>
+        <button id="sidebarCloseBtn" class="sidebar-close-btn" aria-label="Close Navigation Drawer">✕</button>
       </div>
 
       <nav class="sidebar-nav">
@@ -138,22 +139,22 @@
           <button id="menuToggle" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
           
           <button id="searchTrigger" class="search-trigger" aria-label="Open Search">
-            <span>🔍</span>
-            <span>Search formulas, calculators...</span>
+            <span class="search-trigger-icon">🔍</span>
+            <span class="search-trigger-text">Search formulas, calculators...</span>
             <span class="search-shortcut">Ctrl K</span>
           </button>
         </div>
 
         <div class="header-right">
-          <a href="#favorites" class="icon-button" title="View Bookmarked Favorites">
+          <a href="#favorites" class="icon-button" title="View Bookmarked Favorites" aria-label="Favorites">
             <span>★</span>
           </a>
 
-          <button id="themeToggleBtn" class="icon-button" title="Switch Theme">
+          <button id="themeToggleBtn" class="icon-button" title="Switch Theme" aria-label="Toggle Color Theme">
             <span>☀️</span>
           </button>
 
-          <a href="#formulas" class="btn btn-secondary btn-sm" style="display: none; @media(min-width: 600px){display: inline-flex;}">
+          <a href="#formulas" class="btn btn-secondary btn-sm header-formulas-btn">
             <span>📚 Formulas</span>
           </a>
         </div>

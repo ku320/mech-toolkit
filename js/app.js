@@ -23,6 +23,7 @@ class MechToolkitApp {
     this.menuToggle = document.getElementById('menuToggle');
     this.sidebar = document.getElementById('sidebar');
     this.sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    this.sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
     this.toastContainer = document.getElementById('toastContainer');
 
     // State
@@ -67,9 +68,26 @@ class MechToolkitApp {
       this.showToast(`Switched to ${next} theme`, next === 'dark' ? '🌙' : '☀️');
     });
 
-    // Mobile Menu
+    // Mobile Navigation Drawer
     this.menuToggle?.addEventListener('click', () => this.toggleSidebar(true));
+    this.sidebarCloseBtn?.addEventListener('click', () => this.toggleSidebar(false));
     this.sidebarBackdrop?.addEventListener('click', () => this.toggleSidebar(false));
+
+    // Close mobile drawer when clicking any navigation link
+    this.sidebar?.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 960) {
+          this.toggleSidebar(false);
+        }
+      });
+    });
+
+    // Close drawer on desktop resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 960 && this.sidebar?.classList.contains('open')) {
+        this.toggleSidebar(false);
+      }
+    });
 
     // Global Command Menu / Search
     this.searchTrigger?.addEventListener('click', () => this.openSearch());
@@ -80,6 +98,10 @@ class MechToolkitApp {
       } else if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
         e.preventDefault();
         this.openSearch();
+      } else if (e.key === 'Escape') {
+        if (this.sidebar?.classList.contains('open')) {
+          this.toggleSidebar(false);
+        }
       }
     });
 
@@ -122,9 +144,11 @@ class MechToolkitApp {
     if (open) {
       this.sidebar?.classList.add('open');
       this.sidebarBackdrop?.classList.add('active');
+      document.body.style.overflow = 'hidden';
     } else {
       this.sidebar?.classList.remove('open');
       this.sidebarBackdrop?.classList.remove('active');
+      document.body.style.overflow = '';
     }
   }
 
@@ -837,7 +861,7 @@ class MechToolkitApp {
             <h4 style="font-size: 0.9rem; margin-bottom: var(--space-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">
               Reference Units in ${curCat.name} (Base SI: ${curCat.baseUnit})
             </h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;">
               ${unitKeys.map(u => {
                 const item = curCat.units[u];
                 return `
@@ -973,28 +997,30 @@ class MechToolkitApp {
                 <button class="btn btn-secondary btn-sm" data-copy-formula="${f.expression}" title="Copy Formula">📋 Copy</button>
               </div>
 
-              <!-- Variables Table -->
-              <table class="variables-table">
-                <thead>
-                  <tr>
-                    <th style="width: 80px;">SYMBOL</th>
-                    <th>PARAMETER NAME</th>
-                    <th>STANDARD SI UNIT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${f.variables.map(v => `
+              <!-- Variables Table (Scrollable on Mobile) -->
+              <div class="table-responsive">
+                <table class="variables-table">
+                  <thead>
                     <tr>
-                      <td style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan-bright);">${v.symbol}</td>
-                      <td style="color: var(--text-primary); font-weight: 500;">${v.name}</td>
-                      <td style="font-family: var(--font-mono); color: var(--text-secondary);">${v.unit}</td>
+                      <th style="width: 80px;">SYMBOL</th>
+                      <th>PARAMETER NAME</th>
+                      <th>STANDARD SI UNIT</th>
                     </tr>
-                  `).join('')}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    ${f.variables.map(v => `
+                      <tr>
+                        <td style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan-bright);">${v.symbol}</td>
+                        <td style="color: var(--text-primary); font-weight: 500;">${v.name}</td>
+                        <td style="font-family: var(--font-mono); color: var(--text-secondary);">${v.unit}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
 
               <!-- Assumptions & Worked Example -->
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
                 <div class="example-box">
                   <strong style="color: var(--text-primary); display: block; margin-bottom: 4px;">Assumptions:</strong>
                   ${f.assumptions}
@@ -1213,7 +1239,7 @@ class MechToolkitApp {
       </div>
 
       <!-- Materials Cards Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-md);">
+      <div class="cards-grid">
         ${list.map(m => `
           <div class="spotlight-card panel-card" style="padding: var(--space-lg); display: flex; flex-direction: column; justify-content: space-between;">
             <div>

@@ -88,7 +88,12 @@
   --trans-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
   --sidebar-width: 280px;
+  --sidebar-width-mobile: min(320px, 86vw);
   --header-height: 64px;
+  --header-height-mobile: 56px;
+  --content-padding: clamp(12px, 3.5vw, 28px);
+  --touch-target-min: 44px;
+  --input-font-size-mobile: 16px;
 }
 
 /* Light Theme (Crisp Architectural Paper & Indigo / Cyan) */
